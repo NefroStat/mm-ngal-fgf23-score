@@ -1,0 +1,53 @@
+=== MULTIVARIATE COX REGRESSION SUMMARY ===
+
+--- MODEL 1: ADJUSTED FOR eGFR ---
+Call:
+coxph(formula = Surv(тривалість, Exitus) ~ Composite_Score + 
+    `GFR CKD-EPI`, data = df)
+
+  n= 95, number of events= 12 
+
+                           coef exp(coef) se(coef)      z Pr(>|z|)  
+Composite_ScoreScore 2  1.84371   6.31994  0.82564  2.233   0.0255 *
+`GFR CKD-EPI`          -0.01070   0.98936  0.01279 -0.837   0.4026  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+                       exp(coef) exp(-coef) lower .95 upper .95
+Composite_ScoreScore 2    6.3199     0.1582    1.2529    31.879
+`GFR CKD-EPI`             0.9894     1.0108    0.9649     1.014
+
+Concordance= 0.731  (se = 0.055 )
+Likelihood ratio test= 8.52  on 2 df,   p=0.01
+Wald test            = 6.29  on 2 df,   p=0.04
+Score (logrank) test = 7.85  on 2 df,   p=0.02
+
+
+-------------------------------------------
+
+--- MODEL 2: ADJUSTED FOR ISS STAGE ---
+Call:
+coxph(formula = Surv(тривалість, Exitus) ~ Composite_Score + 
+    `stage ISS`, data = df)
+
+  n= 95, number of events= 12 
+
+                         coef exp(coef) se(coef)     z Pr(>|z|)   
+Composite_ScoreScore 2  3.436    31.056    1.243 2.764  0.00571 **
+`stage ISS`2            2.421    11.257    1.330 1.820  0.06881 . 
+`stage ISS`3            3.632    37.786    1.386 2.621  0.00877 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+                       exp(coef) exp(-coef) lower .95 upper .95
+Composite_ScoreScore 2     31.06    0.03220    2.7170     355.0
+`stage ISS`2               11.26    0.08883    0.8297     152.7
+`stage ISS`3               37.79    0.02646    2.4989     571.4
+
+Concordance= 0.849  (se = 0.032 )
+Likelihood ratio test= 20.28  on 3 df,   p=1e-04
+Wald test            = 9.96  on 3 df,   p=0.02
+Score (logrank) test = 15.63  on 3 df,   p=0.001
+
+
+===========================================

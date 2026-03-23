@@ -1,0 +1,15 @@
+=== OVERALL SURVIVAL SUMMARY FOR THE MANUSCRIPT ===
+
+1. MEDIAN SURVIVAL (Months):
+Call: survfit(formula = Surv(тривалість, Exitus) ~ 1, data = df)
+
+      n events median 0.95LCL 0.95UCL
+[1,] 95     12    101      77      NA
+
+--------------------------------------------------
+2. SURVIVAL RATES (3-year and 5-year):
+  Time_Months Time_Years Survival_Percent CI_95_Lower CI_95_Upper
+1          36          3             91.7        84.9        99.2
+2          60          5             78.3        64.3        95.3
+
+==================================================

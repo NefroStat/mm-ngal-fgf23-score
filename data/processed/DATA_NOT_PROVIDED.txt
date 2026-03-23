@@ -1,0 +1,23 @@
+# RESTRICTED DATASET PLACEHOLDER
+
+Due to patient privacy regulations, GDPR compliance, and strict restrictions imposed by the local Ethics Committee, the actual clinical dataset (`clean_data.xlsx`) cannot be hosted in this public repository.
+
+## How to Obtain the Data
+The data that support the findings of this study are available from the corresponding author (v.bardash@1tmolviv.com) upon reasonable request, subject to ethical approval and a formal data-sharing agreement.
+
+## Instructions for Running the Code
+If you have officially been granted access to the dataset, please place the `clean_data.xlsx` file directly in this directory (`data/processed/`). 
+
+The analytical R scripts located in the `scripts/` folder are programmed to look for the dataset at this exact relative path:
+`data/processed/clean_data.xlsx`
+
+## Expected Column Structure
+For the R scripts to execute correctly, please ensure the dataset retains the original column naming convention:
+- `Study_ID` (Unique patient identifier)
+- `тривалість` (Overall survival time in months)
+- `Exitus` (Survival status: 1 = deceased, 0 = censored)
+- `GFR CKD-EPI` (Baseline eGFR)
+- `stage ISS` (International Staging System stage: 1, 2, or 3)
+- `NGAL` (Serum NGAL in ng/mL)
+- `FGF23` (Serum FGF-23 in pg/mL)
+- Other routine lab parameters: `Hb`, `CREA...44`, `Urea`, `CRP`, `alb`, `Total TPROP`, `М-prot g/l`, `β₂-microhlob`
