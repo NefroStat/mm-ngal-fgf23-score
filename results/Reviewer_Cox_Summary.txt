@@ -1,0 +1,44 @@
+=== REVIEWER REQUESTS SUMMARY ===
+
+--- POINT 1: TOTAL EVENTS (DEATHS) ---
+Total patients: 95 
+Number of events (deaths): 12 
+
+--- POINT 3: CONTINUOUS VARIABLES (UNIVARIATE) ---
+NGAL (Continuous):
+           coef exp(coef)   se(coef)        z  Pr(>|z|)
+NGAL 0.01046309  1.010518 0.00976202 1.071816 0.2838028
+
+FGF-23 (Continuous):
+              coef exp(coef)    se(coef)          z  Pr(>|z|)
+FGF23 -0.001332006 0.9986689 0.001465131 -0.9091376 0.3632775
+
+
+--- POINT 4: COMBINED MULTIVARIATE MODEL (Score + eGFR + ISS) ---
+Call:
+coxph(formula = Surv(тривалість, Exitus) ~ Composite_Score + 
+    `GFR CKD-EPI` + `stage ISS`, data = df)
+
+  n= 95, number of events= 12 
+
+                             coef  exp(coef)   se(coef)      z Pr(>|z|)   
+Composite_ScoreScore 2  3.4290515 30.8473693  1.2648735  2.711  0.00671 **
+`GFR CKD-EPI`          -0.0003961  0.9996039  0.0138292 -0.029  0.97715   
+`stage ISS`2            2.4115368 11.1510850  1.3707307  1.759  0.07853 . 
+`stage ISS`3            3.6263481 37.5753449  1.3991853  2.592  0.00955 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+                       exp(coef) exp(-coef) lower .95 upper .95
+Composite_ScoreScore 2   30.8474    0.03242    2.5856   368.028
+`GFR CKD-EPI`             0.9996    1.00040    0.9729     1.027
+`stage ISS`2             11.1511    0.08968    0.7595   163.714
+`stage ISS`3             37.5753    0.02661    2.4206   583.300
+
+Concordance= 0.852  (se = 0.038 )
+Likelihood ratio test= 20.28  on 4 df,   p=4e-04
+Wald test            = 9.96  on 4 df,   p=0.04
+Score (logrank) test = 15.63  on 4 df,   p=0.004
+
+
+===========================================

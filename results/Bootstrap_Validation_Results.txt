@@ -1,0 +1,14 @@
+=== BOOTSTRAP INTERNAL VALIDATION (B=1000) ===
+
+      index.orig training    test optimism index.corrected   Lower  Upper    n
+Dxy       0.4149   0.4185  0.4141   0.0044          0.4106  0.2733 0.5391 1000
+R2        0.1452   0.1807  0.1452   0.0355          0.1097 -0.0772 0.2728 1000
+Slope     1.0000   1.0000  0.8101   0.1899          0.8101 -1.6536 4.7923 1000
+D         0.0914   0.1196  0.0914   0.0282          0.0632 -0.0876 0.1889 1000
+U        -0.0268  -0.0298  0.1570  -0.1868          0.1600 -0.2087 0.6017 1000
+Q         0.1182   0.1494 -0.0656   0.2150         -0.0968 -0.6715 0.3722 1000
+g         0.8351   2.1985  0.8351   1.3634         -0.5282 -4.0924 2.3894 1000
+
+Note for manuscript: The Dxy (Somers' D) can be converted to C-index.
+Original C-index = (Original Dxy / 2) + 0.5
+Optimism-corrected C-index = (Corrected Dxy / 2) + 0.5

@@ -80,39 +80,70 @@ write_xlsx(cox_results_table, "results/Cox_Regression_Results.xlsx")
 message("Success: Univariate Cox regression table saved to 'results/Cox_Regression_Results.xlsx'")
 
 # ------------------------------------------------------------------------------
-# 2.5. Multivariate Cox Regression Models (Separate Models)
+# ДОДАНО ДЛЯ РЕЦЕНЗЕНТА: Пункт 1, 3, 4 (Події, Безперервні змінні, Об'єднана модель)
 # ------------------------------------------------------------------------------
-message("Running multivariate Cox regression models...")
+message("Running reviewer-requested analyses (Continuous vars & Combined Multivariate)...")
 
-# Модель 1: Коригування на eGFR (як було в оригіналі)
-fit_multi_egfr <- coxph(
-  formula = Surv(тривалість, Exitus) ~ Composite_Score + `GFR CKD-EPI`, 
+# Підрахунок кількості подій (Пункт 1)
+total_events <- sum(df$Exitus == 1, na.rm = TRUE)
+
+# Моделі з безперервними змінними (Пункт 3)
+cox_ngal_cont <- coxph(Surv(тривалість, Exitus) ~ NGAL, data = df)
+cox_fgf23_cont <- coxph(Surv(тривалість, Exitus) ~ FGF23, data = df)
+
+# Об'єднана багатофакторна модель (Пункт 4)
+fit_multi_combined <- coxph(
+  formula = Surv(тривалість, Exitus) ~ Composite_Score + `GFR CKD-EPI` + `stage ISS`, 
   data = df
 )
 
-# Модель 2: Коригування на стадію ISS
-fit_multi_iss <- coxph(
-  formula = Surv(тривалість, Exitus) ~ Composite_Score + `stage ISS`, 
-  data = df
-)
+sink("results/Reviewer_Cox_Summary.txt")
+cat("=== REVIEWER REQUESTS SUMMARY ===\n\n")
 
-# Зберігаємо результати обох моделей у зручний текстовий файл
-sink("results/Multivariate_Cox_Summary.txt")
+cat("--- POINT 1: TOTAL EVENTS (DEATHS) ---\n")
+cat("Total patients:", nrow(df), "\n")
+cat("Number of events (deaths):", total_events, "\n\n")
 
-cat("=== MULTIVARIATE COX REGRESSION SUMMARY ===\n\n")
+cat("--- POINT 3: CONTINUOUS VARIABLES (UNIVARIATE) ---\n")
+cat("NGAL (Continuous):\n")
+print(summary(cox_ngal_cont)$coefficients)
+cat("\nFGF-23 (Continuous):\n")
+print(summary(cox_fgf23_cont)$coefficients)
+cat("\n\n")
 
-cat("--- MODEL 1: ADJUSTED FOR eGFR ---\n")
-print(summary(fit_multi_egfr))
-cat("\n-------------------------------------------\n\n")
-
-cat("--- MODEL 2: ADJUSTED FOR ISS STAGE ---\n")
-print(summary(fit_multi_iss))
+cat("--- POINT 4: COMBINED MULTIVARIATE MODEL (Score + eGFR + ISS) ---\n")
+print(summary(fit_multi_combined))
 cat("\n===========================================\n")
-
 sink()
 
-message("Success: Multivariate Cox summaries saved to 'results/Multivariate_Cox_Summary.txt'")
+# ------------------------------------------------------------------------------
+# ДОДАНО ДЛЯ РЕЦЕНЗЕНТА: Пункт 2 (Bootstrapping Internal Validation)
+# ------------------------------------------------------------------------------
+message("Running 1000-iteration Bootstrap Validation (may take a few seconds)...")
 
+# Встановіть пакет rms, якщо його ще немає: install.packages("rms")
+library(rms)
+
+# Налаштування розподілу для пакета rms
+dd <- datadist(df)
+options(datadist="dd")
+
+# Створюємо модель через функцію cph (спеціально для rms)
+fit_cph <- cph(Surv(тривалість, Exitus) ~ Composite_Score, data = df, x=TRUE, y=TRUE, surv=TRUE)
+
+# Запускаємо бутстрепінг (1000 ітерацій)
+set.seed(123) # Для відтворюваності результатів
+boot_val <- validate(fit_cph, method="boot", B=1000)
+
+sink("results/Bootstrap_Validation_Results.txt")
+cat("=== BOOTSTRAP INTERNAL VALIDATION (B=1000) ===\n\n")
+print(boot_val)
+cat("\nNote for manuscript: The Dxy (Somers' D) can be converted to C-index.\n")
+cat("Original C-index = (Original Dxy / 2) + 0.5\n")
+cat("Optimism-corrected C-index = (Corrected Dxy / 2) + 0.5\n")
+sink()
+
+message("Success: All reviewer requested analyses saved to 'results/' folder!")
 # ------------------------------------------------------------------------------
 # 3. Kaplan-Meier Curves (Publication Quality)
 # ------------------------------------------------------------------------------
